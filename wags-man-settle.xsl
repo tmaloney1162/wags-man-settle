@@ -133,8 +133,8 @@
 
 	    <fo:table font-size="8pt" margin-top="0.2in">
 	        <fo:table-column column-width="2.5in"/>
-	        <fo:table-column column-width="0.65in"/>
-	        <fo:table-column column-width="0.8in"/>
+	        <fo:table-column column-width="0.75in"/>
+	        <fo:table-column column-width="0.85in"/>
 	        <fo:table-column column-width="3.25in"/>
 	        <fo:table-column column-width="0.75in"/>
 	        <fo:table-column column-width="3.25in"/>
@@ -167,9 +167,10 @@
 
 	        <fo:table-body>
 	        	<xsl:for-each select="tag">
+        			<xsl:sort select="LabelCode"/>
 	            <fo:table-row>
 						    <fo:table-cell border="{$table-cell-style}" padding="{$tbl-cell-padding}">
-						        <fo:block><xsl:value-of select="CoveredEntity"/></fo:block>
+						        <fo:block><xsl:value-of select="position()"/>-<xsl:value-of select="CoveredEntity"/></fo:block>
 						    </fo:table-cell>
 						    <fo:table-cell border="{$table-cell-style}" padding="{$tbl-cell-padding}">
 						        <fo:block><xsl:value-of select="HRSA-ID"/></fo:block>
@@ -322,10 +323,18 @@
 	        </fo:table-header>
 
 	        <fo:table-body>
-	        	<xsl:for-each select="tag">
+<!--
+	        	<xsl:for-each select="tag">  
+						<xsl:for-each select="tag[not(preceding-sibling::tag)]">
+	        	<xsl:for-each select="tag[not(../tag/LabelCode = .)]">
+	        	<xsl:for-each select="tag[not(preceding-sibling::LabelCode = LabelCode)]">
+
+-->
+	        	<xsl:for-each select="tag[not(preceding-sibling::tag/LabelCode = LabelCode)]">
+        			<xsl:sort select="LabelCode"/>
 	            <fo:table-row>
 						    <fo:table-cell border="{$table-cell-style}" padding="{$tbl-cell-padding}">
-						        <fo:block><xsl:value-of select="LabelCode"/></fo:block>
+						        <fo:block><xsl:value-of select="position()"/>-<xsl:value-of select="LabelCode"/></fo:block>
 						    </fo:table-cell>
 						    <fo:table-cell border="{$table-cell-style}" padding="{$tbl-cell-padding}">
 						        <fo:block><xsl:value-of select="ManufacturerName"/></fo:block>
@@ -337,6 +346,7 @@
 						        <fo:block><xsl:value-of select="ContactNumber"/></fo:block>
 						    </fo:table-cell>
 	            </fo:table-row>
+	            <!-- <xsl:variable name="tmpLabelCode" select="LabelCode"/>  -->
 	          </xsl:for-each>
 	        </fo:table-body>
 	    </fo:table>		
